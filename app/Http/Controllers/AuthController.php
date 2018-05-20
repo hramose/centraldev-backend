@@ -92,7 +92,7 @@ class AuthController extends Controller
             'endpoint' => '/'.$request->path(),
             'success' => true,
             'timestamp' => Carbon::now()->timestamp,
-            'data' => [$token]
+            'data' => ['token' => $token]
         ], 200);
 
     }
