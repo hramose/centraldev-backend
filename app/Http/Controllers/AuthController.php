@@ -88,6 +88,7 @@ class AuthController extends Controller
         $this->sendAnotherEmail($data['email'], 'verify');
 
         $token = JWTAuth::fromUser($user);
+        $token = $token['token'];
         return response()->json([
             'endpoint' => '/'.$request->path(),
             'success' => true,
@@ -210,13 +211,14 @@ class AuthController extends Controller
             $accountLocked->delete();
         }
         $token = compact('token');
+        $token = $token['token'];
         $getUser->login_attempt = 0;
-        $getUser->save();
+        $getUser->save();   
         return response()->json([
             'endpoint' => '/'.$request->path(),
             'success' => true,
             'timestamp' => Carbon::now()->timestamp,
-            'data' => [$token]
+            'data' => ['token' => $token]
         ], 200);
     }
 
