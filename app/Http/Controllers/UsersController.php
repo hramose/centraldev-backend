@@ -36,7 +36,25 @@ class UsersController extends Controller
 	    }
         JWTAuth::parseToken();
         $user = JWTAuth::parseToken()->authenticate();
-        $data = ['is_company' => true, 'company_size' => 1, 'company_role' => 'ceo'];
+        $data = [
+            'account_type' => 'customer',
+            'address' => [
+                'number' => 1,
+                'line_1' => 'Wonderland Road',
+                'line_2' => 'Appartment 35',
+                'zipcode' => '256710',
+                'state' => 'California',
+                'country' => 'United States of America',
+            ],
+            'is_company' => true,
+            'company' => [
+                'size' => '1',
+                'role' => 'ceo',
+                'name' => 'Central\'DEV',
+                'logo' => 'https://example.com/image.png',
+
+            ]
+        ];
         return response()->json([
             $user, $data
         ]);

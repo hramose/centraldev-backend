@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 405
-                ], 405);
+                ], $e->getStatusCode());
             break;
             case $e instanceof NotFoundHttpException:
                 return response()->json([
@@ -72,7 +72,7 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 404
-                ], 404);
+                ], $e->getStatusCode());
             break;
             case $e instanceof BadRequestHttpException:
                 return response()->json([
@@ -81,7 +81,7 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 400
-                ], 400);
+                ], $e->getStatusCode());
             break;
             case $e instanceof UnprocessableEntityHttpException:
                 return response()->json([
@@ -90,7 +90,7 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 422
-                ], 422);
+                ], $e->getStatusCode());
             break;
             case $e instanceof AccessDeniedHttpException:
                 return response()->json([
@@ -99,7 +99,7 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 403
-                ], 403);
+                ], $e->getStatusCode());
             break;
             case $e instanceof UnauthorizedHttpException:
                 return response()->json([
@@ -108,7 +108,7 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 401
-                ], 401);
+                ], $e->getStatusCode());
             break;
             case $e instanceof ServiceUnavailableHttpException:
                 return response()->json([
@@ -117,7 +117,7 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 503
-                ], 503);
+                ], $e->getStatusCode());
             break;
             case $e instanceof TooManyRequestsHttpException:
                 return response()->json([
@@ -126,7 +126,25 @@ class Handler extends ExceptionHandler
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 429
-                ], 429);
+                ], $e->getStatusCode());
+            break;
+            case $e instanceof Tymon\JWTAuth\Exceptions\TokenExpiredException:
+                return response()->json([
+                    'endpoint'  => '/'.$request->path(),
+                    'message'   => 'token_expired',
+                    'success'   => false,
+                    'timestamp' => Carbon::now()->timestamp,
+                    'http_code' => 401
+                ], $e->getStatusCode());
+            break;
+            case $e instanceof Tymon\JWTAuth\Exceptions\TokenInvalidException:
+                return response()->json([
+                    'endpoint'  => '/'.$request->path(),
+                    'message'   => 'token_expired',
+                    'success'   => false,
+                    'timestamp' => Carbon::now()->timestamp,
+                    'http_code' => 401
+                ], $e->getStatusCode());
             break;
         }
         return parent::render($request, $e);
