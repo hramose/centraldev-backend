@@ -12,8 +12,6 @@ Route::match(['GET', 'POST'], '/', function(Request $request) {
     ], 200);
 });
 
-Route::get('/status', function() { return response()->json(['status' => 'offline']); });
-
 Route::post('/auth/register', 'AuthController@register')->name('auth.register');
 Route::post('/auth/login', 'AuthController@login')->name('auth.login');
 Route::get('/auth/verify/{email}/{code}', 'AuthController@verify')->name('auth.verify');

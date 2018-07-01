@@ -12,30 +12,19 @@ class UsersController extends Controller
     public function me(Request $request)
     {
         try {
-            if (! $user = JWTAuth::parseToken()->authenticate()) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Aucun utilisateur trouvé.'
-                ], 404);
-            }
+		    if (! $user = JWTAuth::parseToken()->authenticate()) {
+			    return response()->json(['user_not_found'], 404);
+		    }
 	    } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-		    return response()->json([
-                'success' => false,
-                'error' => 'Le token transmis à expiré.'
-            ], 401);
+		    return response()->json(['token_expired'], $e->getStatusCode());
 	    } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-		    return response()->json([
-                'success' => false,
-                'error' => 'Le token transmis est invalide.'
-            ], 401);
+		    return response()->json(['token_invalid'], $e->getStatusCode());
 	    } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
-		    return response()->json([
-                'success' => false,
-                'error' => 'Le token est absent dans votre requête.'
-            ], 401);
+		    return response()->json(['token_absent'], $e->getStatusCode());
 	    }
         JWTAuth::parseToken();
         $user = JWTAuth::parseToken()->authenticate();
+        $token = compact('user');
         $data = [
             'account_type' => 'customer',
             'address' => [
@@ -55,8 +44,6 @@ class UsersController extends Controller
 
             ]
         ];
-        return response()->json([
-            $user, $data
-        ]);
+        return response()->json(array_merge($token, $data));
     }
 }
