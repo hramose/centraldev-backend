@@ -88,15 +88,12 @@ class AuthController extends Controller
         $this->sendAnotherEmail($data['email'], 'verify');
 
         $token = JWTAuth::fromUser($user);
+        $token = $token['token'];
         return response()->json([
             'endpoint' => '/'.$request->path(),
             'success' => true,
             'timestamp' => Carbon::now()->timestamp,
-            'data' => [
-                'token' => $token,
-                'expires_in' => config('jwt.ttl') * 60,
-                'type' => 'bearer'
-            ]
+            'data' => ['token' => $token]
         ], 200);
 
     }
@@ -221,11 +218,7 @@ class AuthController extends Controller
             'endpoint' => '/'.$request->path(),
             'success' => true,
             'timestamp' => Carbon::now()->timestamp,
-            'data' => [
-                'token' => $token,
-                'expires_in' => config('jwt.ttl') * 60,
-                'type' => 'bearer'
-            ]
+            'data' => ['token' => $token]
         ], 200);
     }
 

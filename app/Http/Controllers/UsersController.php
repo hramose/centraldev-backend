@@ -24,7 +24,6 @@ class UsersController extends Controller
 	    }
         JWTAuth::parseToken();
         $user = JWTAuth::parseToken()->authenticate();
-        $token = compact('user');
         $data = [
             'account_type' => 'customer',
             'address' => [
@@ -44,6 +43,6 @@ class UsersController extends Controller
 
             ]
         ];
-        return response()->json(array_merge($token, $data));
+        return response()->json([compact('user'), $data]);
     }
 }
