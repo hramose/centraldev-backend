@@ -43,6 +43,6 @@ class UsersController extends Controller
 
             ]
         ];
-        return response()->json([compact('user'), $data]);
+        return response()->json([$user, $data]);
     }
 }
