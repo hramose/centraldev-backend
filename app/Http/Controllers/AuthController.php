@@ -286,4 +286,20 @@ class AuthController extends Controller
             'data' => ['email_verified']
         ], 200);
     }
+
+    public function check(Request $request)
+    {
+        try {
+		    if (! $user = JWTAuth::parseToken()->authenticate()) {
+			    return response()->json(['authenticated' => false], 404);
+		    }
+	    } catch (Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
+		    return response()->json(['authenticated' => false], $e->getStatusCode());
+	    } catch (Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
+		    return response()->json(['authenticated' => false], $e->getStatusCode());
+	    } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
+		    return response()->json(['authenticated' => false], $e->getStatusCode());
+        }
+        return response()->json(['authenticated' => true], 200);
+    }
 }
