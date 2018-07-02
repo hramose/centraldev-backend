@@ -289,6 +289,7 @@ class AuthController extends Controller
 
     public function check(Request $request)
     {
+        $timestamp_debut = microtime(true);
         try {
 		    if (! $user = JWTAuth::parseToken()->authenticate()) {
 			    return response()->json(['authenticated' => false], 404);
@@ -300,6 +301,8 @@ class AuthController extends Controller
 	    } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
 		    return response()->json(['authenticated' => false], $e->getStatusCode());
         }
-        return response()->json(['authenticated' => true], 200);
+        $timestamp_fin = microtime(true);
+        $difference_ms = $timestamp_fin - $timestamp_debut;
+        return response()->json(['authenticated' => true, 'execute_time' => $difference_ms], 200);
     }
 }
