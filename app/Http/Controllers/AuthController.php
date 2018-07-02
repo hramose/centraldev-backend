@@ -301,8 +301,6 @@ class AuthController extends Controller
 	    } catch (Tymon\JWTAuth\Exceptions\JWTException $e) {
 		    return response()->json(['authenticated' => false], $e->getStatusCode());
         }
-        $timestamp_fin = microtime(true);
-        $difference_ms = $timestamp_fin - $timestamp_debut;
-        return response()->json(['authenticated' => true, 'execute_time' => $difference_ms], 200);
+        return response()->json(['authenticated' => true], 200);
     }
 }
