@@ -147,6 +147,7 @@ class AuthController extends Controller
         ];
 
         $accountLocked = AccountSecurity::where([['uuid', $getUser->uuid], ['locked', true]])->first();
+        $countAccountLocked = AccountSecurity::where([['uuid', $getUser->uuid], ['locked', true]])->count();
         
         if($getUser->login_attempt >= 3) {
             if(Carbon::now() >= $accountLocked->until) {
@@ -197,7 +198,7 @@ class AuthController extends Controller
             ], 500);
         }
         
-        if($accountLocked >= 1) {
+        if($countAccountLocked >= 1) {
             if(Carbon::now() <= $accountLocked->until) {
                 return response()->json([
                     'endpoint' => '/'.$request->path(),
