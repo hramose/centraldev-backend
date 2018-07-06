@@ -44,7 +44,7 @@ class AuthController extends Controller
             return response()->json([
                 'endpoint' => '/'.$request->path(),
                 'success' => false,
-                'errors'  => $e->getMessage(),
+                'errors'  => [$e->getMessage()],
                 'timestamp' => Carbon::now()->timestamp,
                 'http_code' => 500
             ], 500);
@@ -88,7 +88,6 @@ class AuthController extends Controller
         $this->sendAnotherEmail($data['email'], 'verify');
 
         $token = JWTAuth::fromUser($user);
-        $token = $token['token'];
         return response()->json([
             'endpoint' => '/'.$request->path(),
             'success' => true,
@@ -125,7 +124,7 @@ class AuthController extends Controller
             return response()->json([
                 'endpoint' => '/'.$request->path(),
                 'success' => false,
-                'errors'  => 'no_account_registered_with_email',
+                'errors'  => ['no_account_registered_with_email'],
                 'timestamp' => Carbon::now()->timestamp,
                 'http_code' => 422
             ], 422);
@@ -136,7 +135,7 @@ class AuthController extends Controller
             return response()->json([
                 'endpoint' => '/'.$request->path(),
                 'success' => false,
-                'errors'  => 'email_not_confirmed',
+                'errors'  => ['email_not_confirmed'],
                 'timestamp' => Carbon::now()->timestamp,
                 'http_code' => 401
             ], 401);
@@ -183,7 +182,7 @@ class AuthController extends Controller
                 return response()->json([
                     'endpoint' => '/'.$request->path(),
                     'success' => false,
-                    'errors'  => 'invalid_credentials',
+                    'errors'  => ['invalid_credentials'],
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 401
                 ], 401);
@@ -203,7 +202,7 @@ class AuthController extends Controller
                 return response()->json([
                     'endpoint' => '/'.$request->path(),
                     'success' => false,
-                    'errors'  => 'account_locked',
+                    'errors'  => ['account_locked'],
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 401
                 ]);
