@@ -203,7 +203,7 @@ class AuthController extends Controller
                 return response()->json([
                     'endpoint' => '/'.$request->path(),
                     'success' => false,
-                    'errors'  => ['account_locked'],
+                    'errors'  => ['account_locked', $accountLocked->until],
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 401
                 ]);
