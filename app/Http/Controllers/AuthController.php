@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\SendEmail;
-use App\AccountSecurity;
+use App\Models\User;
+use App\Models\SendEmail;
+use App\Models\AccountSecurity;
 
 use DB;
 use Mail;
@@ -16,7 +16,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 
 class AuthController extends Controller
 {
-    protected function sendAnotherEmail($email, $type)
+    protected function sendEmail($email, $type)
     {
         $user = User::where('email', $email)->first();
         $data = [
@@ -70,13 +70,7 @@ class AuthController extends Controller
                 'http_code' => 422
             ], 422);
         }
-        $uid_numb = User::count() + 1;
-        $uid_name = strtolower($data['lastname'][0]);
-        $uid_fname = strtolower($data['firstname'][0]);
-        $uuid = $uid_name.$uid_fname.$uid_numb."-cdev";
-
         $user = User::create([
-            'uuid' => $uuid,
             'firstname' => ucfirst($data['firstname']),
             'lastname' => strtoupper($data['lastname']),
             'email' => strtolower($data['email']),
@@ -84,9 +78,7 @@ class AuthController extends Controller
             'registered_ip' => \Request::ip(),
             'last_ip' => \Request::ip()
         ]);
-
-        $this->sendAnotherEmail($data['email'], 'verify');
-
+        $this->sendEmail($data['email'], 'verify');
         $token = JWTAuth::fromUser($user);
         return response()->json([
             'endpoint' => '/'.$request->path(),
@@ -103,11 +95,7 @@ class AuthController extends Controller
             'email' => 'required|email|max:70',
             'password' => 'required|min:6|max:50'
         ];
-        $data = $request->only(
-            'email',
-            'password'
-        );
-
+        $data = $request->only('email', 'password');
         $validator = Validator::make($data, $rules);
         if($validator->fails()) {
             return response()->json([
@@ -238,7 +226,7 @@ class AuthController extends Controller
         }
 
         if($code !== $verify->code) {
-            $this->sendAnotherEmail($email, 'verify');
+            $this->sendEmail($email, 'verify');
             return response()->json([
                 'endpoint' => '/'.$request->path(),
                 'success' => false,
@@ -247,7 +235,7 @@ class AuthController extends Controller
                 'http_code' => 401
             ], 401);
         } if($email !== $verify->email) {
-            $this->sendAnotherEmail($email, 'verify');            
+            $this->sendEmail($email, 'verify');            
             return response()->json([
                 'endpoint' => '/'.$request->path(),
                 'success' => false,
@@ -256,7 +244,7 @@ class AuthController extends Controller
                 'http_code' => 401
             ], 401);
         } if(Carbon::now() > $verify->expire_at) {
-            $this->sendAnotherEmail($email, 'verify');            
+            $this->sendEmail($email, 'verify');            
             return response()->json([
                 'endpoint' => '/'.$request->path(),
                 'success' => false,

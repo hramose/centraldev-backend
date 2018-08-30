@@ -56,9 +56,18 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $e)
     {
         switch (true) {
+            case $e instanceof MaintenanceModeException:
+                return response()->json([
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
+                    'message'   => 'maintenance_in_progress',
+                    'success'   => false,
+                    'timestamp' => Carbon::now()->timestamp,
+                    'http_code' => 503
+                ], 503);
+            break;
             case $e instanceof MethodNotAllowedHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'method_not_allowed',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
@@ -67,7 +76,7 @@ class Handler extends ExceptionHandler
             break;
             case $e instanceof NotFoundHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'not_found',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
@@ -76,7 +85,7 @@ class Handler extends ExceptionHandler
             break;
             case $e instanceof BadRequestHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'bad_request',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
@@ -85,7 +94,7 @@ class Handler extends ExceptionHandler
             break;
             case $e instanceof UnprocessableEntityHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'unprocessable_entity',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
@@ -94,7 +103,7 @@ class Handler extends ExceptionHandler
             break;
             case $e instanceof AccessDeniedHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'access_denied',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
@@ -103,7 +112,7 @@ class Handler extends ExceptionHandler
             break;
             case $e instanceof UnauthorizedHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'unauthorized',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
@@ -112,7 +121,7 @@ class Handler extends ExceptionHandler
             break;
             case $e instanceof ServiceUnavailableHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'service_unavailable',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
@@ -121,7 +130,7 @@ class Handler extends ExceptionHandler
             break;
             case $e instanceof TooManyRequestsHttpException:
                 return response()->json([
-                    'endpoint'  => '/'.$request->path(),
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'too_many_requests',
                     'success'   => false,
                     'timestamp' => Carbon::now()->timestamp,
