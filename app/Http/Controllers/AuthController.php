@@ -56,7 +56,7 @@ class AuthController extends Controller
         $rules = [
             'firstname' => 'required|regex:/([A-z-])/|min:3|max:20',
             'lastname'  => 'required|regex:/([A-z-])/|min:3|max:20',
-            'email'     => 'required|email|max:70|unique:authentication',
+            'email'     => 'required|email|max:70|unique:users',
             'password'  => 'required|min:6|max:50|confirmed',
         ];
         $data = $request->only('firstname', 'lastname', 'email', 'password', 'password_confirmation');
