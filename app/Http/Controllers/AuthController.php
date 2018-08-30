@@ -20,7 +20,7 @@ class AuthController extends Controller
     {
         $user = User::where('email', $email)->first();
         $data = [
-            'uuid' => $user->uuid,
+            'user_id' => $user->id,
             'email' => $user->email,
             'firstname' => $user->firstname,
             'lastname' =>  $user->lastname,
@@ -29,7 +29,7 @@ class AuthController extends Controller
         $data['verify_url'] = route('auth.verify', ['email' => $data['email'], 'code' => $data['code']]);
         
         $insertVerify = new SendEmail;
-        $insertVerify->uuid = $data['uuid'];
+        $insertVerify->user_id = $data['user_id'];
         $insertVerify->email = $data['email'];
         $insertVerify->code = $data['code'];
         $insertVerify->type = $type;
@@ -134,8 +134,8 @@ class AuthController extends Controller
             'email_confirmed' => 1
         ];
 
-        $accountLocked = AccountSecurity::where([['uuid', $getUser->uuid], ['locked', true]])->first();
-        $countAccountLocked = AccountSecurity::where([['uuid', $getUser->uuid], ['locked', true]])->count();
+        $accountLocked = AccountSecurity::where([['user_id', $getUser->id], ['locked', true]])->first();
+        $countAccountLocked = AccountSecurity::where([['user_id', $getUser->id], ['locked', true]])->count();
         
         if($getUser->login_attempt >= 3) {
             if(Carbon::now() >= $accountLocked->until) {
@@ -151,7 +151,7 @@ class AuthController extends Controller
 
                 if($getUser->login_attempt >= 3) {
                     $lockAccount = new AccountSecurity;
-                    $lockAccount->uuid = $getUser->uuid;
+                    $lockAccount->user_id = $getUser->user_id;
                     $lockAccount->locked = true;
                     $lockAccount->until = Carbon::now()->addMinutes(15);
                     $lockAccount->save();

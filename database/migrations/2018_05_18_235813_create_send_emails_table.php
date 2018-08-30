@@ -17,7 +17,7 @@ class CreateSendEmailsTable extends Migration
     {
         Schema::create('send_emails', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid');
+            $table->tinyInteger('user_id');
             $table->string('email');
             $table->text('code');
             $table->string('type');

@@ -15,7 +15,7 @@ class CreateAccountSecuritiesTable extends Migration
     {
         Schema::create('account_security', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('uuid');
+            $table->tinyInteger('user_id');
             $table->boolean('locked')->default(false);
             $table->string('until');
             $table->timestamps();
