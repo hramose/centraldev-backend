@@ -27,7 +27,6 @@ class AuthController extends Controller
             'code' => str_random(30)
         ];
         $data['verify_url'] = route('auth.verify', ['email' => $data['email'], 'code' => $data['code']]);
-        
         $insertVerify = new SendEmail;
         $insertVerify->user_id = $data['user_id'];
         $insertVerify->email = $data['email'];
