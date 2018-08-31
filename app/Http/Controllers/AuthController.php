@@ -277,7 +277,6 @@ class AuthController extends Controller
 
     public function check(Request $request)
     {
-        $timestamp_debut = microtime(true);
         try {
 		    if (! $user = JWTAuth::parseToken()->authenticate()) {
 			    return response()->json(['authenticated' => false], 404);
