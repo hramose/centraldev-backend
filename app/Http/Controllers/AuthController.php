@@ -135,7 +135,6 @@ class AuthController extends Controller
 
         $accountLocked = AccountSecurity::where([['user_id', $getUser->id], ['locked', true]])->first();
         $countAccountLocked = AccountSecurity::where([['user_id', $getUser->id], ['locked', true]])->count();
-        
         if($getUser->login_attempt >= 3) {
             if(Carbon::now() >= $accountLocked->until) {
                 $accountLocked->delete();
@@ -147,10 +146,9 @@ class AuthController extends Controller
         try {
             if(!$token = JWTAuth::attempt($credentials)) {
                 $getUser->increment('login_attempt');
-
                 if($getUser->login_attempt >= 3) {
                     $lockAccount = new AccountSecurity;
-                    $lockAccount->user_id = $getUser->user_id;
+                    $lockAccount->user_id = $getUser->id;
                     $lockAccount->locked = true;
                     $lockAccount->until = Carbon::now()->addMinutes(15);
                     $lockAccount->save();
