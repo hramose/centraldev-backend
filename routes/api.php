@@ -5,8 +5,8 @@ use Carbon\Carbon;
 
 Route::match(['GET', 'POST'], '/', function(Request $request) { 
     return response()->json([
-        'endpoint' => '/'.$request->path(),
-        'message' => 'hello_world',
+        'endpoint' => $request->path(),
+        'message' => 'Docs available at : https://docs.centraldev.fr/api/',
         'success' => true,
         'timestamp' => Carbon::now()->timestamp,
     ], 200);
