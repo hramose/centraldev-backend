@@ -106,7 +106,6 @@ class AuthController extends Controller
             ], 422);
         }
         $countUser = User::where('email', $request->email)->count();
-        
         if($countUser == 0) {
             return response()->json([
                 'endpoint' => '/'.$request->path(),
