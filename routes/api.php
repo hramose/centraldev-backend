@@ -3,20 +3,21 @@
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
 Route::match(['GET', 'POST'], '/', function(Request $request) { 
     return response()->json([
         'endpoint' => $request->path(),
         'documentation_url' => 'https://docs.centraldev.fr/',
-        'success' => true,
         'timestamp' => Carbon::now()->timestamp,
     ], 200);
-});
-
-Route::post('/auth/register', 'AuthController@register')->name('auth.register');
-Route::post('/auth/login', 'AuthController@login')->name('auth.login');
-Route::get('/auth/verify/{email}/{code}', 'AuthController@verify')->name('auth.verify');
-Route::match(['GET', 'POST'], '/auth/check', 'AuthController@check')->name('auth.check');
-
-Route::group(['middleware' => ['jwt.auth']], function() {
-    Route::match(['GET', 'POST'], '/users/me', 'UsersController@me')->name('users.me');
 });
