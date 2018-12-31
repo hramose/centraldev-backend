@@ -23,10 +23,11 @@ Route::match(['GET', 'POST'], '/', function(Request $request)
     ], 200);
 });
 
-Route::group(['middleware' => 'api', 'prefix' => 'auth'], function() {
-    Route::post('register', 'AuthController@register');
-    Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
+Route::group(['middleware' => 'api', 'prefix' => 'auth', 'as' => 'auth.'], function() {
+    Route::post('register', 'AuthController@register')->name('register');
+    Route::post('login', 'AuthController@login')->name('login');
+    Route::post('logout', 'AuthController@logout')->name('logout');
+    Route::post('refresh', 'AuthController@refresh')->name('refresh');
+    Route::get('verify/{code}', 'AuthController@verify')->name('verify');
     Route::post('me', 'AuthController@me');
 });

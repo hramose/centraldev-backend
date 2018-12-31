@@ -10,3 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/not-api/mails/user/verify', function() {
+    return view('emails.user.verify-email-address')->with('verify_url', 'blabla');
+});
