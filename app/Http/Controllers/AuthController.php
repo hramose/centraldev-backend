@@ -35,14 +35,18 @@ class AuthController extends Controller
         return response()->json(auth()->user());
     }
 
-    public function login()
+    public function login(Request $request)
     {
         $rules = [
             'email' => 'required|email|max:70',
             'password' => 'required|min:6|max:50'
         ];
-        $data = $request->only('email', 'password');
-        $validator = Validator::make($data, $rules);
+        $credentials = $request->only('email', 'password');
+        $validator = Validator::make($credentials, $rules);
+        if(!$token = auth()->attempt($credentials)) {
+            return json_response('wrong_credentials', 'https://docs.centraldev.fr/errors/login#wrong-credentials', [__('auth.failed')], null, 401);
+        }
+        return 'true';
     }
 
     public function logout()
@@ -66,14 +70,7 @@ class AuthController extends Controller
         $validator = Validator::make($data, $rules);
 
         if($validator->fails()) {
-            return response()->json([
-                'endpoint' => '/'.$request->path(),
-                'success' => false,
-                'documentation_url' => 'https://docs.centraldev.fr/errors/register#validator-fails',
-                'errors'  => $validator->messages()->all(),
-                'timestamp' => Carbon::now()->timestamp,
-                'http_code' => 422
-            ], 422);
+            return json_response('validation_error', 'https://docs.centraldev.fr/errors/register#validator-fails', $validator->messages()->all(), null, 422);
         }
 
         $user = User::create([
