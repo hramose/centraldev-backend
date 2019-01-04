@@ -5,13 +5,13 @@ namespace App\Exceptions;
 use Exception;
 use Carbon\Carbon;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 
 class Handler extends ExceptionHandler
@@ -60,7 +60,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'maintenance_in_progress',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#maintenance-in-progress',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 503
                 ], 503);
@@ -69,7 +69,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'method_not_allowed',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#method-not-allowed',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 405
                 ], 405);
@@ -78,7 +78,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'not_found',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#not-found',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 404
                 ], 404);
@@ -87,7 +87,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'bad_request',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#bad-request',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 400
                 ], 400);
@@ -96,7 +96,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'unprocessable_entity',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#unprocessable-entity',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 422
                 ], 422);
@@ -105,7 +105,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'access_denied',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#access-denied',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 403
                 ], 403);
@@ -114,7 +114,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'unauthorized',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#unauthorized',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 401
                 ], 401);
@@ -123,7 +123,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'service_unavailable',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#service-unavailable',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 503
                 ], 503);
@@ -132,7 +132,7 @@ class Handler extends ExceptionHandler
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'too_many_requests',
-                    'success'   => false,
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#too-many-requests',
                     'timestamp' => Carbon::now()->timestamp,
                     'http_code' => 429
                 ], 429);

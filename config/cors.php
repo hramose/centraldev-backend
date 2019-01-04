@@ -11,6 +11,7 @@ return [
     | to accept any value.
     |
     */
+   
     'supportsCredentials' => false,
     'allowedOrigins' => ['*'],
     'allowedOriginsPatterns' => [],
@@ -18,4 +19,5 @@ return [
     'allowedMethods' => ['*'],
     'exposedHeaders' => [],
     'maxAge' => 0,
+
 ];

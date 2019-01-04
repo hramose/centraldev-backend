@@ -56,8 +56,13 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS'),
+        'name' => env('APP_NAME'),
+    ],
+    
+    'reply_to' => [
+        'address' => env('MAIL_REPLY_TO'),
+        'name' => env('APP_NAME')
     ],
 
     /*
@@ -119,5 +124,18 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Log Channel
+    |--------------------------------------------------------------------------
+    |
+    | If you are using the "log" driver, you may specify the logging channel
+    | if you prefer to keep mail messages separate from other log entries
+    | for simpler reading. Otherwise, the default channel will be used.
+    |
+    */
+
+    'log_channel' => env('MAIL_LOG_CHANNEL'),
 
 ];

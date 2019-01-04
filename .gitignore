@@ -3,12 +3,10 @@
 /public/storage
 /storage/*.key
 /vendor
-/.idea
-/.vscode
-/.vagrant
+.env
+.DS_Store
+.phpunit.result.cache
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-.env
-.DS_Store

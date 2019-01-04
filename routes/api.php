@@ -3,20 +3,40 @@
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
-Route::match(['GET', 'POST'], '/', function(Request $request) { 
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+Route::match(['GET', 'POST'], '/', function(Request $request)
+{ 
     return response()->json([
         'endpoint' => $request->path(),
-        'message' => 'Docs available at : https://docs.centraldev.fr/api/',
-        'success' => true,
+        'documentation_url' => 'https://docs.centraldev.fr/',
         'timestamp' => Carbon::now()->timestamp,
     ], 200);
 });
+Route::group(['prefix' => 'errors', 'as' => 'errors.'], function() {
+    Route::match(['GET', 'POST'], '401', function() {
+                return json_response('unauthenticated', 'https://docs.centraldev.fr/errors/unauthenticated', null, null, 401);
+    })->name('401');
+});
 
-Route::post('/auth/register', 'AuthController@register')->name('auth.register');
-Route::post('/auth/login', 'AuthController@login')->name('auth.login');
-Route::get('/auth/verify/{email}/{code}', 'AuthController@verify')->name('auth.verify');
-Route::match(['GET', 'POST'], '/auth/check', 'AuthController@check')->name('auth.check');
+Route::group(['middleware' => 'api', 'prefix' => 'auth', 'as' => 'auth.'], function() {
+    Route::post('register', 'AuthController@register')->name('register');
+    Route::post('login', 'AuthController@login')->name('login');
+    Route::post('logout', 'AuthController@logout')->name('logout');
+    Route::post('refresh', 'AuthController@refresh')->name('refresh');
+    Route::get('verify/{code}', 'AuthController@verify')->name('verify');
+    Route::match(['GET', 'POST'], 'check', 'AuthController@check');
+});
 
-Route::group(['middleware' => ['jwt.auth']], function() {
-    Route::match(['GET', 'POST'], '/users/me', 'UsersController@me')->name('users.me');
+Route::group(['prefix' => 'users', 'as' => 'users.'], function() {
+    Route::match(['GET', 'POST'], '@me', 'UsersController@me');
 });
