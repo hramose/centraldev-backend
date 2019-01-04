@@ -22,6 +22,11 @@ Route::match(['GET', 'POST'], '/', function(Request $request)
         'timestamp' => Carbon::now()->timestamp,
     ], 200);
 });
+Route::group(['prefix' => 'errors', 'as' => 'errors.'], function() {
+    Route::match(['GET', 'POST'], '401', function() {
+                return json_response('unauthenticated', 'https://docs.centraldev.fr/errors/unauthenticated', null, null, 401);
+    })->name('401');
+});
 
 Route::group(['middleware' => 'api', 'prefix' => 'auth', 'as' => 'auth.'], function() {
     Route::post('register', 'AuthController@register')->name('register');
@@ -29,5 +34,9 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'as' => 'auth.'], funct
     Route::post('logout', 'AuthController@logout')->name('logout');
     Route::post('refresh', 'AuthController@refresh')->name('refresh');
     Route::get('verify/{code}', 'AuthController@verify')->name('verify');
-    Route::post('me', 'AuthController@me');
+    Route::match(['GET', 'POST'], 'check', 'AuthController@check');
+});
+
+Route::group(['prefix' => 'users', 'as' => 'users.'], function() {
+    Route::match(['GET', 'POST'], '@me', 'UsersController@me');
 });

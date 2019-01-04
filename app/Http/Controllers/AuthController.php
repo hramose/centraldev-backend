@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-
 use App\Mails\User\verifyEmailAddress;
 
 use DB;
@@ -18,21 +17,25 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'check']]);
     }
 
     protected function respondWithToken($token)
     {
-        return response()->json([
+        return [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60
-        ]);
+        ];
     }
 
-    public function me()
+    public function check()
     {
-        return response()->json(auth()->user());
+        if(auth()->user()) {
+            return response()->json(['authenticated' => true], 200);
+        } else {
+            return response()->json(['authenticated' => false], 401);
+        }
     }
 
     public function login(Request $request)
@@ -46,7 +49,8 @@ class AuthController extends Controller
         if(!$token = auth()->attempt($credentials)) {
             return json_response('wrong_credentials', 'https://docs.centraldev.fr/errors/login#wrong-credentials', [__('auth.failed')], null, 401);
         }
-        return 'true';
+
+        return json_response('auth_success', null, null, $this->respondWithToken($token), 200);
     }
 
     public function logout()
