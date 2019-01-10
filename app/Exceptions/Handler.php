@@ -13,6 +13,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
+use \Illuminate\Auth\AuthenticationException;
 
 class Handler extends ExceptionHandler
 {
@@ -111,6 +112,15 @@ class Handler extends ExceptionHandler
                 ], 403);
             break;
             case $e instanceof UnauthorizedHttpException:
+                return response()->json([
+                    'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
+                    'message'   => 'unauthorized',
+                    'documentation_url' => 'https://docs.centraldev.fr/errors/http-errors#unauthorized',
+                    'timestamp' => Carbon::now()->timestamp,
+                    'http_code' => 401
+                ], 401);
+            break;
+            case $e instanceof AuthenticationException:
                 return response()->json([
                     'endpoint'  => $request->path() === '/' ? '/' : '/'.$request->path(),
                     'message'   => 'unauthorized',

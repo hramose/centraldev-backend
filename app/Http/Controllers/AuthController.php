@@ -49,6 +49,10 @@ class AuthController extends Controller
         if(!$token = auth()->attempt($credentials)) {
             return json_response('wrong_credentials', 'https://docs.centraldev.fr/errors/login#wrong-credentials', [__('auth.failed')], null, 401);
         }
+        $user = User::where('email', $credentials['email']);
+        if(!$user->first()->email_confirmed) {
+            return json_response('email_not_confirmed', 'https://docs.centraldev.fr/errors/login#email-not-confirmed', [__('auth.email_not_confirmed')], null, 401);
+        }
 
         return json_response('auth_success', null, null, $this->respondWithToken($token), 200);
     }
