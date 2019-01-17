@@ -46,8 +46,8 @@ class AuthController extends Controller
         $user = User::create([
             'email' => strtolower($data['email']),
             'password' => bcrypt($data['passwords']['password']),
-            'registered_ip' => \Request::ip(),
-            'last_ip' => \Request::ip()
+            'registered_ip' => $request->ip(),
+            'last_ip' => $request->ip()
         ]);
         Mail::to($user)->send(new verifyEmailAddress($user));
         $credentials = ['email' => $data['email'], 'password' => $data['passwords']['password']];
@@ -74,6 +74,8 @@ class AuthController extends Controller
         if(!$user->first()->email_confirmed) {
             return json_response('email_not_confirmed', 'https://docs.centraldev.fr/errors/login#email-not-confirmed', [__('auth.email_not_confirmed')], null, 401);
         }
+        $user->last_ip = $request->ip();
+        $user->save();
 
         return json_response('auth_success', null, null, $this->respondWithToken($token), 200);
     }
