@@ -144,6 +144,10 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'user.email'                            => 'email',
+        'user.passwords.password'               => 'password',
+        'user.passwords.password_confirmation'  => 'password confirmation'
+    ],
 
 ];

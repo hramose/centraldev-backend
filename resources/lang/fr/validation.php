@@ -25,7 +25,7 @@ return [
     'between'              => [
         'numeric' => 'La valeur de :attribute doit être comprise entre :min et :max.',
         'file'    => 'La taille du fichier de :attribute doit être comprise entre :min et :max kilo-octets.',
-        'string'  => 'Le texte :attribute doit contenir entre :min et :max caractères.',
+        'string'  => 'Le champ :attribute doit contenir entre :min et :max caractères.',
         'array'   => 'Le tableau :attribute doit contenir entre :min et :max éléments.',
     ],
     'boolean'              => 'Le champ :attribute doit être vrai ou faux.',
@@ -45,13 +45,13 @@ return [
     'gt'                   => [
         'numeric' => 'La valeur de :attribute doit être supérieure à :value.',
         'file'    => 'La taille du fichier de :attribute doit être supérieure à :value kilo-octets.',
-        'string'  => 'Le texte :attribute doit contenir plus de :value caractères.',
+        'string'  => 'Le champ :attribute doit contenir plus de :value caractères.',
         'array'   => 'Le tableau :attribute doit contenir plus de :value éléments.',
     ],
     'gte'                  => [
         'numeric' => 'La valeur de :attribute doit être supérieure ou égale à :value.',
         'file'    => 'La taille du fichier de :attribute doit être supérieure ou égale à :value kilo-octets.',
-        'string'  => 'Le texte :attribute doit contenir au moins :value caractères.',
+        'string'  => 'Le champ :attribute doit contenir au moins :value caractères.',
         'array'   => 'Le tableau :attribute doit contenir au moins :value éléments.',
     ],
     'image'                => 'Le champ :attribute doit être une image.',
@@ -65,19 +65,19 @@ return [
     'lt'                   => [
         'numeric' => 'La valeur de :attribute doit être inférieure à :value.',
         'file'    => 'La taille du fichier de :attribute doit être inférieure à :value kilo-octets.',
-        'string'  => 'Le texte :attribute doit contenir moins de :value caractères.',
+        'string'  => 'Le champ :attribute doit contenir moins de :value caractères.',
         'array'   => 'Le tableau :attribute doit contenir moins de :value éléments.',
     ],
     'lte'                  => [
         'numeric' => 'La valeur de :attribute doit être inférieure ou égale à :value.',
         'file'    => 'La taille du fichier de :attribute doit être inférieure ou égale à :value kilo-octets.',
-        'string'  => 'Le texte :attribute doit contenir au plus :value caractères.',
+        'string'  => 'Le champ :attribute doit contenir au plus :value caractères.',
         'array'   => 'Le tableau :attribute doit contenir au plus :value éléments.',
     ],
     'max'                  => [
         'numeric' => 'La valeur de :attribute ne peut être supérieure à :max.',
         'file'    => 'La taille du fichier de :attribute ne peut pas dépasser :max kilo-octets.',
-        'string'  => 'Le texte de :attribute ne peut contenir plus de :max caractères.',
+        'string'  => 'Le champ de :attribute ne peut contenir plus de :max caractères.',
         'array'   => 'Le tableau :attribute ne peut contenir plus de :max éléments.',
     ],
     'mimes'                => 'Le champ :attribute doit être un fichier de type : :values.',
@@ -85,7 +85,7 @@ return [
     'min'                  => [
         'numeric' => 'La valeur de :attribute doit être supérieure ou égale à :min.',
         'file'    => 'La taille du fichier de :attribute doit être supérieure à :min kilo-octets.',
-        'string'  => 'Le texte :attribute doit contenir au moins :min caractères.',
+        'string'  => 'Le champ :attribute doit contenir au moins :min caractères.',
         'array'   => 'Le tableau :attribute doit contenir au moins :min éléments.',
     ],
     'not_in'               => "Le champ :attribute sélectionné n'est pas valide.",
@@ -104,7 +104,7 @@ return [
     'size'                 => [
         'numeric' => 'La valeur de :attribute doit être :size.',
         'file'    => 'La taille du fichier de :attribute doit être de :size kilo-octets.',
-        'string'  => 'Le texte de :attribute doit contenir :size caractères.',
+        'string'  => 'Le champ de :attribute doit contenir :size caractères.',
         'array'   => 'Le tableau :attribute doit contenir :size éléments.',
     ],
     'starts_with'          => 'The :attribute must start with one of the following: :values',
@@ -173,5 +173,10 @@ return [
         'time'                  => 'heure',
         'available'             => 'disponible',
         'size'                  => 'taille',
+
+        // Custom attributes
+        'user.email'                            => 'adresse email',
+        'user.passwords.password'               => 'mot de passe',
+        'user.passwords.password_confirmation'  => 'confirmation du mot de passe'
     ],
 ];

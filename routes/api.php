@@ -15,7 +15,7 @@ use Carbon\Carbon;
 */
 
 Route::match(['GET', 'POST'], '/', function(Request $request)
-{ 
+{
     return response()->json([
         'endpoint' => $request->path(),
         'documentation_url' => 'https://docs.centraldev.fr/',
