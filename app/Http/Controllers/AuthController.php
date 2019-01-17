@@ -74,8 +74,8 @@ class AuthController extends Controller
         if(!$user->first()->email_confirmed) {
             return json_response('email_not_confirmed', 'https://docs.centraldev.fr/errors/login#email-not-confirmed', [__('auth.email_not_confirmed')], null, 401);
         }
-        $user->last_ip = $request->ip();
-        $user->save();
+
+        $user->update(['last_ip' => $request->ip()]);
 
         return json_response('auth_success', null, null, $this->respondWithToken($token), 200);
     }
