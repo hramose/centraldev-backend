@@ -21,9 +21,7 @@ class CreateSystemEmailsTable extends Migration
             $table->boolean('verified')->default(false);
             $table->text('expire_at');
             $table->timestamps();
-        });
 
-        Schema::table('system_emails', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('authentication');
         });
     }

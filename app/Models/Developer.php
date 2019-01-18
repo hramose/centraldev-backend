@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SystemEmails extends Model
+class Developer extends Model
 {
-    protected $table = 'system_emails';
+    protected $table = 'developers';
 }
