@@ -19,7 +19,7 @@ class CreateKnowledgeTable extends Migration
         });
 
         Schema::create('developers_knowledges', function (Blueprint $table) {
-            $table->integer('developers_id')->unsigned();
+            $table->integer('developers_id')->unsigned()->unique();
             $table->integer('knowledge_id')->unsigned();
 
             $table->foreign('developers_id')->references('user_id')->on('developers');

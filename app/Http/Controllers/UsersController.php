@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Carbon\Carbon;
-use App\Models\User;
+use App\Models\Authentication;
+use App\Models\Developer;
 use Illuminate\Http\Request;
 
 class UsersController extends Controller
@@ -15,6 +17,13 @@ class UsersController extends Controller
 
     public function me()
     {
-        return response()->json([auth()->user()]);
+        $user = auth()->user();
+        $user = DB::table('authentication')
+                    ->join('developers', 'authentication.id', '=', 'developers.user_id')
+                    ->select('authentication.email', 'developers.*')
+                    ->where('developers.user_id', '=', $user->id)
+                    ->get();
+
+        return response()->json($user);
     }
 }

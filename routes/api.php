@@ -33,8 +33,8 @@ Route::group(['middleware' => 'api', 'prefix' => 'auth', 'as' => 'auth.'], funct
     Route::post('login', 'AuthController@login')->name('login');
     Route::post('logout', 'AuthController@logout')->name('logout');
     Route::post('refresh', 'AuthController@refresh')->name('refresh');
-    Route::get('verify/{code}', 'AuthController@verify')->name('verify');
-    Route::match(['GET', 'POST'], 'check', 'AuthController@check');
+    Route::post('verify/{code}', 'AuthController@verify')->name('verify');
+    Route::match(['GET', 'POST'], 'check', 'AuthController@check')->name('check');
 });
 
 Route::group(['prefix' => 'users', 'as' => 'users.'], function() {

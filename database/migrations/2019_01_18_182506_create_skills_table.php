@@ -19,7 +19,7 @@ class CreateSkillsTable extends Migration
         });
 
         Schema::create('developers_skills', function (Blueprint $table) {
-            $table->integer('developers_id')->unsigned();
+            $table->integer('developers_id')->unsigned()->unique();
             $table->integer('skill_id')->unsigned();
 
             $table->foreign('developers_id')->references('user_id')->on('developers');

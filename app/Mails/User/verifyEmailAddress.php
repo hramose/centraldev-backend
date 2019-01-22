@@ -33,7 +33,7 @@ class verifyEmailAddress extends Mailable
      */
     public function build()
     {
-        $code = \str_random(20);
+        $code = \str_random(32);
         $saveToDB = new SystemEmails;
         $saveToDB->user_id = $this->user->id;
         $saveToDB->code = $code;
