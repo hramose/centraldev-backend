@@ -41,10 +41,8 @@ class verifyEmailAddress extends Mailable
         $saveToDB->expire_at = Carbon::now()->addHours(2);
         $saveToDB->save();
 
-        $verifyUrl = route('auth.verify', ['code' => $code]);
-
         return $this->subject('Vérifiez votre adresse e-mail')
                     ->view('emails.user.verify-email-address')
-                    ->with(['verify_url' => $verifyUrl]);
+                    ->with(['code' => $code]);
     }
 }
