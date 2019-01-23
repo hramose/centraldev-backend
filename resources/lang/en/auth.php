@@ -17,7 +17,8 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'email_not_confirmed' => 'You must confirm your email address to access your account',
     'verify' => [
-        'not-found' => 'The verification link doesn\'t exist.'
+        'not-found' => 'The verification link doesn\'t exist.',
+        'cannot' => 'Unable to verify your email address.'
     ],
 
 ];

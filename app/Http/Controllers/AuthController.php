@@ -19,7 +19,7 @@ class AuthController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register', 'check', 'verify']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'check', 'verify', 'resendVerify']]);
     }
 
     protected function respondWithToken($token)
@@ -136,7 +136,13 @@ class AuthController extends Controller
         }
     }
 
-    public function verify(Request $request, String $code) {
+    public function verify(Request $request)
+    {
+        $code = $request->only('code');
+        $validator = Validator::make($code, ['code' => 'required']);
+        if($validator->fails()) {
+            return json_response('validation_error', '/errors/verify#validator-fails', $validator->messages()->all(), null, 422);
+        }
         $checkCode = SystemEmails::where(['code' => $code, 'verified' => false, 'type' => 'verify-email']);
 
         if(!$checkCode->first()) {
@@ -154,5 +160,25 @@ class AuthController extends Controller
         $user->save();
 
         return json_response('verify_success', null, null, null, 200);
+    }
+
+    public function resendVerify(Request $request)
+    {
+        $email = $request->only('email');
+        $validator = Validator::make($email, ['email' => 'required|email|max:70']);
+        if($validator->fails()) {
+            return json_response('validation_error', '/errors/verify#validator-fails', $validator->messages()->all(), null, 422);
+        }
+
+        $user = Authentication::where(['email' => $email, 'email_confirmed' => false]);
+        if(!$user->first()) {
+            return json_response('cannot_verify', '/errors/verify#cannot-verify', [__('auth.verify.cannot')], null, 401);
+        }
+
+        $verify = SystemEmails::where(['user_id' => $user->first()->id, 'type' => 'verify-email']);
+        $verify->delete();
+        Mail::to($user->first())->send(new verifyEmailAddress($user->first()));
+
+        return json_response('mail_sent', null, null, null, 200);
     }
 }

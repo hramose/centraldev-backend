@@ -127,8 +127,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'code' => [
+            'required' => 'Le code de vérification est obligatoire',
         ],
     ],
 

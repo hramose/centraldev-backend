@@ -2,7 +2,7 @@
 
 namespace App\Mails\User;
 
-use App\Models\User;
+use App\Models\Authentication;
 use App\Models\SystemEmails;
 
 use Carbon\Carbon;
@@ -21,7 +21,7 @@ class verifyEmailAddress extends Mailable
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(Authentication $user)
     {
         $this->user = $user;
     }

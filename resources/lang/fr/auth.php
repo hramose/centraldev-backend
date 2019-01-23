@@ -16,6 +16,7 @@ return [
     'throttle' => 'Tentatives de connexion trop nombreuses. Veuillez essayer de nouveau dans :seconds secondes.',
     'email_not_confirmed' => 'Vous devez confirmer votre adresse email pour accéder à votre compte. Pour cela',
     'verify' => [
-        'not-found' => 'Le lien de vérification n\'existe pas.'
+        'not-found' => 'Le lien de vérification n\'existe pas.',
+        'cannot' => 'Impossible de vérifier votre adresse email.'
     ],
 ];
