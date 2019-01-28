@@ -18,12 +18,30 @@ class UsersController extends Controller
     public function me()
     {
         $user = auth()->user();
+        $user_id = $user->id;
         $user = DB::table('authentication')
                     ->join('developers', 'authentication.id', '=', 'developers.user_id')
-                    ->select('authentication.email', 'developers.*')
-                    ->where('developers.user_id', '=', $user->id)
-                    ->get();
+                    ->select([
+                        'authentication.email',
+                        'developers.firstname',
+                        'developers.lastname',
+                        'developers.dob',
+                        'developers.phone',
+                    ])
+                    ->where('developers.user_id', '=', $user_id)
+                    ->first();
+        $userAddress = DB::table('developers')
+                            ->join('addresses', 'developers.user_id', '=', 'addresses.id')
+                            ->select([
+                                'addresses.*'
+                            ])
+                            ->where('developers.user_id', '=', $user_id)
+                            ->first();
 
-        return response()->json($user);
+        $user->gravatar = 'https://www.gravatar.com/avatar/'.md5($user->email).'?s=512';
+        $user->address = $userAddress;
+        return response()->json([
+            'profile' => $user
+        ]);
     }
 }
