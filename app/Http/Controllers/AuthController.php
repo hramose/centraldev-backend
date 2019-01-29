@@ -143,19 +143,18 @@ class AuthController extends Controller
         if($validator->fails()) {
             return json_response('validation_error', '/errors/verify#validator-fails', $validator->messages()->all(), null, 422);
         }
-        $checkCode = SystemEmails::where(['code' => $code, 'verified' => false, 'type' => 'verify-email']);
+        $checkCode = SystemEmails::where(['code' => $code, 'verified' => false, 'type' => 'verify-email'])->first();
 
-        if(!$checkCode->first()) {
+        if(!$checkCode) {
             return json_response('verify_not_found', '/errors/verify#not-found', [__('auth.verify.not-found')], null, 422);
         }
-        if(Carbon::now() > $checkCode->first()->expire_at) {
+        if(Carbon::now() > $checkCode->expire_at) {
             return json_response('verify_expired', '/errors/verify#expired', [__('auth.verify.expired')], null, 401);
         }
 
-        $checkCode = $checkCode->first();
         $checkCode->verified = true;
         $checkCode->save();
-        $user = Authentication::where('id', $checkCode->first()->user_id)->first();
+        $user = Authentication::where('id', $checkCode->user_id)->first();
         $user->email_confirmed = true;
         $user->save();
 
